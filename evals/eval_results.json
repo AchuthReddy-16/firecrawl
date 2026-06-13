@@ -1,0 +1,86 @@
+[
+  {
+    "url": "https://docs.python.org/3/library/json.html",
+    "site_type": "docs",
+    "has_headings": true,
+    "has_tables": true,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 40789,
+    "success": true,
+    "latency_ms": 426.66,
+    "score": 100
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Large_language_model",
+    "site_type": "wiki",
+    "has_headings": true,
+    "has_tables": true,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 270285,
+    "success": true,
+    "latency_ms": 574.6,
+    "score": 100
+  },
+  {
+    "url": "https://react.dev/learn",
+    "site_type": "spa",
+    "has_headings": true,
+    "has_tables": false,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 18822,
+    "success": true,
+    "latency_ms": 362.59,
+    "score": 80
+  },
+  {
+    "url": "https://news.ycombinator.com",
+    "site_type": "news",
+    "has_headings": false,
+    "has_tables": true,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 15247,
+    "success": true,
+    "latency_ms": 441.22,
+    "score": 70
+  },
+  {
+    "url": "https://www.amazon.com/dp/B08N5WRWNW",
+    "site_type": "ecommerce",
+    "has_headings": false,
+    "has_tables": false,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 437,
+    "success": true,
+    "latency_ms": 1344.73,
+    "score": 50
+  },
+  {
+    "url": "https://arxiv.org/abs/2305.10601",
+    "site_type": "research",
+    "has_headings": true,
+    "has_tables": true,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 7907,
+    "success": true,
+    "latency_ms": 416.02,
+    "score": 100
+  },
+  {
+    "url": "https://jobs.lever.co/anthropic",
+    "site_type": "jobs",
+    "has_headings": true,
+    "has_tables": false,
+    "has_links": true,
+    "noise_ratio": 0.0,
+    "char_count": 254,
+    "success": true,
+    "latency_ms": 485.06,
+    "score": 80
+  }
+]
