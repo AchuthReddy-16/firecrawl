@@ -1,0 +1,151 @@
+{
+    "docs": [
+      {
+        "url": "https://docs.python.org/3/library/json.html",
+        "must_contain": ["json", "dumps", "loads", "encoding"],
+        "must_not_contain": ["cookie", "subscribe", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": true,
+        "expected_code_blocks": true,
+        "notes": "Python standard library docs"
+      },
+      {
+        "url": "https://fastapi.tiangolo.com/tutorial/",
+        "must_contain": ["fastapi", "endpoint", "request"],
+        "must_not_contain": ["cookie", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_code_blocks": true,
+        "notes": "FastAPI tutorial page"
+      },
+      {
+        "url": "https://docs.docker.com/get-started/",
+        "must_contain": ["docker", "container", "image"],
+        "must_not_contain": ["cookie", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_code_blocks": true,
+        "notes": "Docker getting started"
+      }
+    ],
+    "ecommerce": [
+      {
+        "url": "https://www.amazon.com/dp/B08N5WRWNW",
+        "must_contain": ["echo", "alexa", "price"],
+        "must_not_contain": ["cookie policy", "advertisement"],
+        "expected_headings": false,
+        "expected_tables": false,
+        "expected_price": true,
+        "notes": "Amazon Echo product page"
+      },
+      {
+        "url": "https://www.bestbuy.com/site/apple-airpods/6084400.p",
+        "must_contain": ["airpods", "apple", "price"],
+        "must_not_contain": ["cookie policy", "subscribe now"],
+        "expected_headings": false,
+        "expected_tables": false,
+        "expected_price": true,
+        "notes": "BestBuy AirPods page"
+      }
+    ],
+    "news": [
+      {
+        "url": "https://techcrunch.com",
+        "must_contain": ["technology", "startup"],
+        "must_not_contain": ["cookie policy", "subscribe now"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_author": true,
+        "notes": "TechCrunch homepage"
+      },
+      {
+        "url": "https://arstechnica.com",
+        "must_contain": ["technology", "science"],
+        "must_not_contain": ["cookie policy", "subscribe now"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_author": true,
+        "notes": "Ars Technica homepage"
+      }
+    ],
+    "jobs": [
+      {
+        "url": "https://jobs.lever.co/anthropic",
+        "must_contain": ["engineer", "research", "remote"],
+        "must_not_contain": ["cookie policy", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_salary": false,
+        "notes": "Anthropic jobs page"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/firecrawl",
+        "must_contain": ["engineer", "firecrawl"],
+        "must_not_contain": ["cookie policy"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_salary": false,
+        "notes": "Firecrawl jobs page"
+      }
+    ],
+    "research": [
+      {
+        "url": "https://arxiv.org/abs/2305.10601",
+        "must_contain": ["abstract", "model", "training"],
+        "must_not_contain": ["cookie", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_code_blocks": false,
+        "notes": "ArXiv research paper"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Large_language_model",
+        "must_contain": ["language model", "transformer", "training"],
+        "must_not_contain": ["cookie", "advertisement"],
+        "expected_headings": true,
+        "expected_tables": true,
+        "expected_code_blocks": false,
+        "notes": "Wikipedia LLM page"
+      }
+    ],
+    "spa": [
+      {
+        "url": "https://react.dev/learn",
+        "must_contain": ["react", "component", "jsx"],
+        "must_not_contain": ["advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_code_blocks": true,
+        "notes": "React docs SPA"
+      },
+      {
+        "url": "https://nextjs.org/docs",
+        "must_contain": ["next", "page", "routing"],
+        "must_not_contain": ["advertisement"],
+        "expected_headings": true,
+        "expected_tables": false,
+        "expected_code_blocks": true,
+        "notes": "NextJS docs SPA"
+      }
+    ],
+    "adversarial": [
+      {
+        "url": "https://www.wsj.com",
+        "must_contain": [],
+        "must_not_contain": [],
+        "expected_headings": false,
+        "expected_tables": false,
+        "expected_paywall": true,
+        "notes": "WSJ paywall site"
+      },
+      {
+        "url": "https://www.nytimes.com",
+        "must_contain": [],
+        "must_not_contain": [],
+        "expected_headings": false,
+        "expected_tables": false,
+        "expected_paywall": true,
+        "notes": "NYT paywall site"
+      }
+    ]
+  }

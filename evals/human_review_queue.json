@@ -1,0 +1,194 @@
+[
+  {
+    "url": "https://fastapi.tiangolo.com/tutorial/",
+    "category": "docs",
+    "final_score": 70.0,
+    "llm_reason": "Most content present, low noise, but missing some fields.",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://docs.docker.com/get-started/",
+    "category": "docs",
+    "final_score": 71.6,
+    "llm_reason": "Failed to parse LLM response",
+    "llm_variance": 1,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://kubernetes.io/docs/concepts/overview/",
+    "category": "docs",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://pytorch.org/docs/stable/torch.html",
+    "category": "docs",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://redis.io/docs/latest/",
+    "category": "docs",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.amazon.com/dp/B08N5WRWNW",
+    "category": "ecommerce",
+    "final_score": 48.0,
+    "llm_reason": "Failed to parse LLM response",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.walmart.com/ip/Apple-AirPods/969494903",
+    "category": "ecommerce",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.newegg.com/p/pl?d=gpu",
+    "category": "ecommerce",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://techcrunch.com",
+    "category": "news",
+    "final_score": 70.0,
+    "llm_reason": "Failed to parse LLM response",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.theverge.com",
+    "category": "news",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://news.ycombinator.com",
+    "category": "news",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://jobs.lever.co/anthropic",
+    "category": "jobs",
+    "final_score": 60.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.ycombinator.com/jobs",
+    "category": "jobs",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://wellfound.com/jobs",
+    "category": "jobs",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://arxiv.org/abs/2305.10601",
+    "category": "research",
+    "final_score": 70.0,
+    "llm_reason": "Most content present, low noise, usable. Missing 'training' in the abstract.",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://arxiv.org/abs/2307.09288",
+    "category": "research",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)",
+    "category": "research",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://nextjs.org/docs",
+    "category": "spa",
+    "final_score": 70.0,
+    "llm_reason": "Most content present, low noise, usable. Missing 'routing' in must_contain list.",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://vercel.com/docs",
+    "category": "spa",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://linear.app",
+    "category": "spa",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.wsj.com",
+    "category": "adversarial",
+    "final_score": 60.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.nytimes.com",
+    "category": "adversarial",
+    "final_score": 0.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": "scrape_failed"
+  },
+  {
+    "url": "https://medium.com",
+    "category": "adversarial",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  },
+  {
+    "url": "https://www.wired.com",
+    "category": "adversarial",
+    "final_score": 40.0,
+    "llm_reason": "LLM not invoked \u2014 deterministic score not borderline",
+    "llm_variance": 0,
+    "fail_reason": ""
+  }
+]
