@@ -168,7 +168,7 @@ def run_evals():
                 "fail_reason": "scrape_failed"
             }
         else:
-            checks = run_code_checks(markdown, url, gt_map)
+            checks = run_code_checks(markdown, url, gt_map, category=category)
 
         code_score = checks["code_score"]
 
