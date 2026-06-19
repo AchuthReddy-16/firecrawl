@@ -62,10 +62,26 @@ def check_paywall(markdown: str) -> bool:
     paywall_signals = [
         'subscribe to read', 'subscribe to continue',
         'already a subscriber', 'sign in to read',
-        'create an account to read', 'premium content'
+        'create an account to read', 'premium content',
+        'subscribe for full access', 'subscribe now to read',
+        'this article is for subscribers', 'members only',
+        'become a member', 'unlock this article',
+        'read the full article', 'continue reading',
+        'get full access', 'digital subscription',
+        'log in to read', 'login to continue',
+        'register to read', 'free trial',
+        'access this article', 'exclusive content',
+        'subscriber exclusive', 'paywall',
+        'subscription required', 'paid content'
     ]
+    # Also detect very short content on known paywall sites
+    # Real article pages should have at least 500 chars
+    too_short = len(markdown) < 500
+
     md_lower = markdown.lower()
-    return any(p in md_lower for p in paywall_signals)
+    signal_found = any(p in md_lower for p in paywall_signals)
+
+    return signal_found or too_short
 
 
 def check_must_contain(markdown: str, keywords: list) -> tuple:

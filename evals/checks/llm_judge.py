@@ -2,12 +2,9 @@ import os
 import re
 import json
 import time
-import math
 
-#    Configurable model
-MODEL = os.environ.get("OPENROUTER_MODEL", "meta-llama/llama-3.1-8b-instruct")
+MODEL = os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini")
 
-#   Rubric only — tight prompt 
 RUBRIC = """
 1 = Empty, garbled, only boilerplate
 2 = Heavy noise, missing most fields
@@ -17,7 +14,6 @@ RUBRIC = """
 """
 
 
-#  Markdown preview — head + tail 
 def build_markdown_preview(markdown: str, max_chars: int = 3000) -> str:
     if not markdown:
         return ""
@@ -28,7 +24,6 @@ def build_markdown_preview(markdown: str, max_chars: int = 3000) -> str:
     return head + "\n\n...[TRUNCATED]...\n\n" + tail
 
 
-#  Tight prompt 
 def build_prompt(markdown: str, url: str, gt: dict, category: str) -> str:
     must_contain = gt.get("must_contain", [])
     must_not_contain = gt.get("must_not_contain", [])
@@ -51,7 +46,7 @@ Rules:
 Extracted markdown:
 {preview}
 
-Return only valid JSON:
+Your response must start with {{ and end with }}. No other text before or after. Return only this JSON:
 {{
   "score": <1-5>,
   "reason": "<2 sentences max>",
@@ -60,7 +55,6 @@ Return only valid JSON:
 }}"""
 
 
-# ── LLM call 
 def call_llm(prompt: str) -> str:
     import urllib.request
 
@@ -72,7 +66,13 @@ def call_llm(prompt: str) -> str:
         "model": MODEL,
         "max_tokens": 300,
         "temperature": 0.1,
-        "messages": [{"role": "user", "content": prompt}]
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a JSON-only eval judge. You must respond with only a valid JSON object. No explanations, no markdown, no text before or after the JSON."
+            },
+            {"role": "user", "content": prompt}
+        ]
     }).encode()
 
     req = urllib.request.Request(
@@ -91,7 +91,6 @@ def call_llm(prompt: str) -> str:
         return data["choices"][0]["message"]["content"]
 
 
-#  JSON parsing — strict 
 def parse_llm_response(text: str) -> dict:
     try:
         text = text.strip()
@@ -108,7 +107,6 @@ def parse_llm_response(text: str) -> dict:
 
         result = json.loads(match.group())
 
-        # Clamp score 1-5
         score = int(result.get("score", 3))
         score = max(1, min(5, score))
 
@@ -132,7 +130,6 @@ def parse_llm_response(text: str) -> dict:
         }
 
 
-#  Single LLM call, multi only if borderline 
 def run_llm_judge(
     markdown: str,
     url: str,
@@ -140,14 +137,8 @@ def run_llm_judge(
     category: str,
     code_score: float
 ) -> dict:
-    """
-    Single pass by default.
-    3 runs only if score is borderline or confidence is low.
-    Reduces cost and latency significantly.
-    """
     prompt = build_prompt(markdown, url, gt, category)
 
-    # Run once first
     try:
         raw = call_llm(prompt)
         first = parse_llm_response(raw)
@@ -167,7 +158,6 @@ def run_llm_judge(
     low_confidence = first["confidence"] == "low"
     disagrees_with_code = abs((score / 5 * 100) - code_score) > 30
 
-    # Multi-run only when needed
     if borderline or low_confidence or disagrees_with_code:
         scores = [score]
         for _ in range(2):
@@ -202,70 +192,38 @@ def run_llm_judge(
     }
 
 
-# ── Final score combiner
 def compute_final_score(
     code_score: float,
     llm_score: float,
     must_contain_pass: bool,
     must_contain_keywords: list
 ) -> float:
-    """
-    60% deterministic + 40% LLM.
-    Cap at 70 if required keywords missing.
-    LLM judge cannot override objective failures.
-    """
     final = (0.6 * code_score) + (0.4 * llm_score)
-
-    # Cap if ground truth keywords missing
     if must_contain_keywords and not must_contain_pass:
         final = min(final, 70.0)
-
     return round(final, 1)
 
 
-# ── Cohen's Kappa 
-def compute_cohens_kappa(
-    llm_scores: list,
-    human_scores: list
-) -> float:
-    """
-    Measures agreement between LLM judge and human labels.
-    > 0.8 = LLM is trustworthy
-    < 0.8 = LLM may be biased or hallucinating
-
-    Both lists must be same length, scores 1-5.
-    """
+def compute_cohens_kappa(llm_scores: list, human_scores: list) -> float:
     if len(llm_scores) != len(human_scores):
         raise ValueError("Score lists must be same length")
-
     n = len(llm_scores)
     if n == 0:
         return 0.0
-
-    # Observed agreement
     po = sum(1 for a, b in zip(llm_scores, human_scores) if a == b) / n
-
-    # Expected agreement
     categories = list(range(1, 6))
     pe = 0.0
     for c in categories:
         p_llm = llm_scores.count(c) / n
         p_human = human_scores.count(c) / n
         pe += p_llm * p_human
-
     if pe == 1.0:
         return 1.0
-
     kappa = (po - pe) / (1 - pe)
     return round(kappa, 3)
 
 
 def run_kappa_check(human_labels_path: str, llm_results: list) -> dict:
-    """
-    Compare LLM scores against human labels.
-    human_labels.json = [{url, human_score}]
-    llm_results = [{url, llm_raw_avg}]
-    """
     try:
         with open(human_labels_path) as f:
             human_data = json.load(f)
@@ -276,10 +234,10 @@ def run_kappa_check(human_labels_path: str, llm_results: list) -> dict:
             "message": "Fill evals/human_labels.json to enable Kappa check"
         }
 
-    human_map = {h["url"]: h["human_score"] for h in human_data}
+    human_map = {h["url"]: h["human_score"] for h in human_data
+                 if h.get("human_score") is not None}
     llm_map = {r["url"]: round(r.get("llm_raw_avg", 3)) for r in llm_results}
 
-    # Only compare URLs present in both
     common_urls = [u for u in human_map if u in llm_map]
     if len(common_urls) < 10:
         return {

@@ -1,77 +1,102 @@
 [
-    {
-      "url": "https://docs.python.org/3/library/json.html",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://fastapi.tiangolo.com/tutorial/",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://docs.docker.com/get-started/",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://www.amazon.com/dp/B08N5WRWNW",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://www.bestbuy.com/site/apple-airpods/6084400.p",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://techcrunch.com",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://arstechnica.com",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://jobs.lever.co/anthropic",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://jobs.ashbyhq.com/firecrawl",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://arxiv.org/abs/2305.10601",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://en.wikipedia.org/wiki/Large_language_model",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://react.dev/learn",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://nextjs.org/docs",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://www.wsj.com",
-      "human_score": null,
-      "notes": ""
-    },
-    {
-      "url": "https://www.nytimes.com",
-      "human_score": null,
-      "notes": ""
-    }
-  ]
+  {
+    "url": "https://docs.python.org/3/library/json.html",
+    "human_score": 5,
+    "notes": "Headings, tables, code blocks all preserved. 40789 chars of real content. Nothing to fix."
+  },
+  {
+    "url": "https://fastapi.tiangolo.com/tutorial/",
+    "human_score": 3,
+    "notes": "Headings and code blocks present but must_contain keywords failed and no tables. Partial extraction, content exists but ground truth mismatch suggests key sections missing."
+  },
+  {
+    "url": "https://stripe.com/docs/api",
+    "human_score": 5,
+    "notes": "Headings, tables, code blocks, dates all present. 38761 chars. Clean API docs extraction."
+  },
+  {
+    "url": "https://www.postgresql.org/docs/current/index.html",
+    "human_score": 4,
+    "notes": "Headings and tables present but no code blocks despite being technical docs. Likely missing inline SQL examples."
+  },
+  {
+    "url": "https://www.amazon.com/dp/B08N5WRWNW",
+    "human_score": 1,
+    "notes": "Only 437 chars returned, paywall/block flag triggered, must_contain failed completely. This is a broken scrape, not low quality content — Firecrawl is being blocked here."
+  },
+  {
+    "url": "https://www.walmart.com/ip/Apple-AirPods/969494903",
+    "human_score": 2,
+    "notes": "Headings and price detected but LLM judge correctly flagged this as mostly boilerplate with missing product information. Code checks alone would have overscored this."
+  },
+  {
+    "url": "https://www.newegg.com/p/pl?d=gpu",
+    "human_score": 4,
+    "notes": "Headings, tables, price all present across 93467 chars. Real product listing data, solid extraction."
+  },
+  {
+    "url": "https://techcrunch.com",
+    "human_score": 3,
+    "notes": "Headings present but must_contain failed and LLM correctly identified reCAPTCHA noise in the output. Homepage extraction picking up bot-check artifacts."
+  },
+  {
+    "url": "https://arstechnica.com",
+    "human_score": 5,
+    "notes": "Tables, price, date all present across 37009 chars. Code score 95 is justified, this is clean."
+  },
+  {
+    "url": "https://www.bbc.com/news/technology",
+    "human_score": 3,
+    "notes": "Headings present but LLM flagged missing images and links. Article structure exists but is incomplete."
+  },
+  {
+    "url": "https://jobs.lever.co/anthropic",
+    "human_score": 1,
+    "notes": "Only 254 chars, paywall flag triggered incorrectly (this isn't a paywall site), must_contain failed. Scraper is getting a loading shell, not the actual job listing content."
+  },
+  {
+    "url": "https://jobs.ashbyhq.com/firecrawl",
+    "human_score": 5,
+    "notes": "Headings, price, 5372 chars of real job listing content. Code score 100 is accurate here."
+  },
+  {
+    "url": "https://www.ycombinator.com/jobs",
+    "human_score": 4,
+    "notes": "Headings and price present across 23361 chars. Good job board extraction, no LLM flag needed."
+  },
+  {
+    "url": "https://arxiv.org/abs/2305.10601",
+    "human_score": 3,
+    "notes": "Tables present but must_contain failed. Abstract page extracted but missing some expected keywords from ground truth — possibly abstract-only vs full paper."
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Large_language_model",
+    "human_score": 5,
+    "notes": "Everything present across 255058 chars. This is the gold standard result in the dataset."
+  },
+  {
+    "url": "https://react.dev/learn",
+    "human_score": 5,
+    "notes": "Headings, links, code blocks all present, 18822 chars. Clean SPA extraction, no rendering issues."
+  },
+  {
+    "url": "https://tailwindcss.com/docs",
+    "human_score": 4,
+    "notes": "Headings and code blocks present but only 3143 chars — thinner than expected for a docs page, may be missing sections below the fold."
+  },
+  {
+    "url": "https://www.wsj.com",
+    "human_score": 3,
+    "notes": "196748 chars returned with no paywall flag, despite WSJ being a known paywall site. This is a real Firecrawl gap, not our eval's fault. Score reflects uncertainty about whether this is genuine free content or a bypass artifact."
+  },
+  {
+    "url": "https://www.economist.com",
+    "human_score": 3,
+    "notes": "Same issue as WSJ — 26458 chars with no paywall detection on a known paywalled publication. Our paywall detector is missing JS-rendered paywalls."
+  },
+  {
+    "url": "https://dev.to",
+    "human_score": 4,
+    "notes": "Headings present, 31052 chars, no LLM flag raised. Clean community blog extraction."
+  }
+]

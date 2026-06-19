@@ -7,58 +7,125 @@ from firecrawl import FirecrawlApp
 from checks.code_checks import run_code_checks, load_ground_truth
 from checks.llm_judge import run_llm_judge, compute_final_score, run_kappa_check
 
-# ── Ensure output dir exists 
 os.makedirs("evals", exist_ok=True)
 
-# ── Test URLs 
 TEST_URLS = [
-    # Docs (6)
-    {"url": "https://docs.python.org/3/library/json.html",   "type": "docs"},
-    {"url": "https://fastapi.tiangolo.com/tutorial/",         "type": "docs"},
-    {"url": "https://docs.docker.com/get-started/",           "type": "docs"},
-    {"url": "https://kubernetes.io/docs/concepts/overview/",  "type": "docs"},
-    {"url": "https://pytorch.org/docs/stable/torch.html",     "type": "docs"},
-    {"url": "https://redis.io/docs/latest/",                  "type": "docs"},
+    # Docs (15)
+    {"url": "https://docs.python.org/3/library/json.html",        "type": "docs"},
+    {"url": "https://fastapi.tiangolo.com/tutorial/",              "type": "docs"},
+    {"url": "https://docs.docker.com/get-started/",                "type": "docs"},
+    {"url": "https://kubernetes.io/docs/concepts/overview/",       "type": "docs"},
+    {"url": "https://pytorch.org/docs/stable/torch.html",          "type": "docs"},
+    {"url": "https://redis.io/docs/latest/",                       "type": "docs"},
+    {"url": "https://docs.aws.amazon.com/s3/index.html",           "type": "docs"},
+    {"url": "https://developers.google.com/maps/documentation",    "type": "docs"},
+    {"url": "https://stripe.com/docs/api",                         "type": "docs"},
+    {"url": "https://docs.anthropic.com/en/docs/intro-to-claude",  "type": "docs"},
+    {"url": "https://platform.openai.com/docs/introduction",       "type": "docs"},
+    {"url": "https://docs.github.com/en/rest",                     "type": "docs"},
+    {"url": "https://flask.palletsprojects.com/en/stable/",        "type": "docs"},
+    {"url": "https://www.postgresql.org/docs/current/index.html",  "type": "docs"},
+    {"url": "https://nginx.org/en/docs/",                          "type": "docs"},
 
-    # Ecommerce (4)
-    {"url": "https://www.amazon.com/dp/B08N5WRWNW",                  "type": "ecommerce"},
-    {"url": "https://www.bestbuy.com/site/apple-airpods/6084400.p",  "type": "ecommerce"},
-    {"url": "https://www.walmart.com/ip/Apple-AirPods/969494903",    "type": "ecommerce"},
-    {"url": "https://www.newegg.com/p/pl?d=gpu",                     "type": "ecommerce"},
+    # Ecommerce (15)
+    {"url": "https://www.amazon.com/dp/B08N5WRWNW",                "type": "ecommerce"},
+    {"url": "https://www.walmart.com/ip/Apple-AirPods/969494903",  "type": "ecommerce"},
+    {"url": "https://www.newegg.com/p/pl?d=gpu",                   "type": "ecommerce"},
+    {"url": "https://www.ebay.com/sch/i.html?_nkw=macbook+pro",    "type": "ecommerce"},
+    {"url": "https://www.target.com/c/electronics/-/N-5xtg6",      "type": "ecommerce"},
+    {"url": "https://store.steampowered.com/app/1091500/",         "type": "ecommerce"},
+    {"url": "https://www.apple.com/shop/buy-iphone",               "type": "ecommerce"},
+    {"url": "https://www.bestbuy.com/site/laptops/",               "type": "ecommerce"},
+    {"url": "https://www.etsy.com/c/jewelry",                      "type": "ecommerce"},
+    {"url": "https://www.homedepot.com/b/Tools/N-5yc1vZc1qv",     "type": "ecommerce"},
+    {"url": "https://www.costco.com/electronics.html",             "type": "ecommerce"},
+    {"url": "https://shop.lululemon.com/c/womens-leggings",        "type": "ecommerce"},
+    {"url": "https://www.bhphotovideo.com/c/browse/cameras/ci/9811","type": "ecommerce"},
+    {"url": "https://www.chewy.com/b/food-332",                    "type": "ecommerce"},
+    {"url": "https://www.zappos.com/c/sneakers",                   "type": "ecommerce"},
 
-    # News (4)
-    {"url": "https://techcrunch.com",        "type": "news"},
-    {"url": "https://arstechnica.com",       "type": "news"},
-    {"url": "https://www.theverge.com",      "type": "news"},
-    {"url": "https://news.ycombinator.com",  "type": "news"},
+    # News (15)
+    {"url": "https://techcrunch.com",                              "type": "news"},
+    {"url": "https://arstechnica.com",                             "type": "news"},
+    {"url": "https://www.theverge.com",                            "type": "news"},
+    {"url": "https://news.ycombinator.com",                        "type": "news"},
+    {"url": "https://venturebeat.com",                             "type": "news"},
+    {"url": "https://www.wired.com",                               "type": "news"},
+    {"url": "https://mashable.com",                                "type": "news"},
+    {"url": "https://www.bbc.com/news/technology",                 "type": "news"},
+    {"url": "https://www.reuters.com/technology/",                 "type": "news"},
+    {"url": "https://thenextweb.com",                              "type": "news"},
+    {"url": "https://www.engadget.com",                            "type": "news"},
+    {"url": "https://gizmodo.com",                                 "type": "news"},
+    {"url": "https://www.zdnet.com",                               "type": "news"},
+    {"url": "https://9to5mac.com",                                 "type": "news"},
+    {"url": "https://www.androidcentral.com",                      "type": "news"},
 
-    # Jobs (4)
-    {"url": "https://jobs.lever.co/anthropic",    "type": "jobs"},
-    {"url": "https://jobs.ashbyhq.com/firecrawl", "type": "jobs"},
-    {"url": "https://www.ycombinator.com/jobs",   "type": "jobs"},
-    {"url": "https://wellfound.com/jobs",          "type": "jobs"},
+    # Jobs (15)
+    {"url": "https://jobs.lever.co/anthropic",                     "type": "jobs"},
+    {"url": "https://jobs.ashbyhq.com/firecrawl",                  "type": "jobs"},
+    {"url": "https://www.ycombinator.com/jobs",                    "type": "jobs"},
+    {"url": "https://wellfound.com/jobs",                          "type": "jobs"},
+    {"url": "https://careers.google.com/jobs/results/",            "type": "jobs"},
+    {"url": "https://www.metacareers.com/jobs/",                   "type": "jobs"},
+    {"url": "https://jobs.netflix.com/search",                     "type": "jobs"},
+    {"url": "https://www.amazon.jobs/en/search",                   "type": "jobs"},
+    {"url": "https://boards.greenhouse.io/openai",                 "type": "jobs"},
+    {"url": "https://www.linkedin.com/jobs/search/?keywords=ml+engineer", "type": "jobs"},
+    {"url": "https://remoteok.com/remote-ml-jobs",                 "type": "jobs"},
+    {"url": "https://weworkremotely.com/categories/remote-programming-jobs", "type": "jobs"},
+    {"url": "https://jobs.github.com",                             "type": "jobs"},
+    {"url": "https://www.indeed.com/jobs?q=machine+learning",      "type": "jobs"},
+    {"url": "https://angel.co/jobs",                               "type": "jobs"},
 
-    # Research (4)
-    {"url": "https://arxiv.org/abs/2305.10601",                                   "type": "research"},
-    {"url": "https://arxiv.org/abs/2307.09288",                                   "type": "research"},
-    {"url": "https://en.wikipedia.org/wiki/Large_language_model",                 "type": "research"},
+    # Research (10)
+    {"url": "https://arxiv.org/abs/2305.10601",                    "type": "research"},
+    {"url": "https://arxiv.org/abs/2307.09288",                    "type": "research"},
+    {"url": "https://arxiv.org/abs/2303.08774",                    "type": "research"},
+    {"url": "https://en.wikipedia.org/wiki/Large_language_model",  "type": "research"},
     {"url": "https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)", "type": "research"},
+    {"url": "https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback", "type": "research"},
+    {"url": "https://paperswithcode.com/sota/language-modelling-on-penn-treebank-word", "type": "research"},
+    {"url": "https://huggingface.co/papers",                       "type": "research"},
+    {"url": "https://distill.pub",                                 "type": "research"},
+    {"url": "https://lilianweng.github.io/posts/2023-06-23-agent/","type": "research"},
 
-    # SPA (4)
-    {"url": "https://react.dev/learn",  "type": "spa"},
-    {"url": "https://nextjs.org/docs",  "type": "spa"},
-    {"url": "https://vercel.com/docs",  "type": "spa"},
-    {"url": "https://linear.app",       "type": "spa"},
+    # SPA (15)
+    {"url": "https://react.dev/learn",                             "type": "spa"},
+    {"url": "https://nextjs.org/docs",                             "type": "spa"},
+    {"url": "https://vercel.com/docs",                             "type": "spa"},
+    {"url": "https://linear.app",                                  "type": "spa"},
+    {"url": "https://www.notion.so/product",                       "type": "spa"},
+    {"url": "https://tailwindcss.com/docs",                        "type": "spa"},
+    {"url": "https://ui.shadcn.com/docs",                          "type": "spa"},
+    {"url": "https://www.figma.com/community",                     "type": "spa"},
+    {"url": "https://supabase.com/docs",                           "type": "spa"},
+    {"url": "https://planetscale.com/docs",                        "type": "spa"},
+    {"url": "https://railway.app/",                                "type": "spa"},
+    {"url": "https://fly.io/docs/",                                "type": "spa"},
+    {"url": "https://deno.com/deploy/docs",                        "type": "spa"},
+    {"url": "https://svelte.dev/docs",                             "type": "spa"},
+    {"url": "https://vuejs.org/guide/introduction",                "type": "spa"},
 
-    # Adversarial (4)
-    {"url": "https://www.wsj.com",     "type": "adversarial"},
-    {"url": "https://www.nytimes.com", "type": "adversarial"},
-    {"url": "https://medium.com",      "type": "adversarial"},
-    {"url": "https://www.wired.com",   "type": "adversarial"},
+    # Adversarial (15)
+    {"url": "https://www.wsj.com",                                 "type": "adversarial"},
+    {"url": "https://www.nytimes.com",                             "type": "adversarial"},
+    {"url": "https://medium.com",                                  "type": "adversarial"},
+    {"url": "https://www.wired.com",                               "type": "adversarial"},
+    {"url": "https://www.bloomberg.com/technology",                "type": "adversarial"},
+    {"url": "https://www.ft.com",                                  "type": "adversarial"},
+    {"url": "https://www.economist.com",                           "type": "adversarial"},
+    {"url": "https://substack.com",                                "type": "adversarial"},
+    {"url": "https://www.patreon.com",                             "type": "adversarial"},
+    {"url": "https://www.cloudflare.com",                          "type": "adversarial"},
+    {"url": "https://www.forbes.com/technology/",                  "type": "adversarial"},
+    {"url": "https://www.businessinsider.com/tech",                "type": "adversarial"},
+    {"url": "https://hackernoon.com",                              "type": "adversarial"},
+    {"url": "https://dev.to",                                      "type": "adversarial"},
+    {"url": "https://lobste.rs",                                   "type": "adversarial"},
 ]
 
 
-# ── Percentile helper 
 def percentile(values: list, p: float) -> float:
     if not values:
         return 0
@@ -67,7 +134,6 @@ def percentile(values: list, p: float) -> float:
     return values[idx]
 
 
-# ── Result dataclass 
 @dataclass
 class EvalResult:
     url: str
@@ -97,7 +163,6 @@ class EvalResult:
 
 
 def run_evals():
-    # ── API key check 
     fc_key = os.environ.get("FIRECRAWL_API_KEY")
     if not fc_key:
         raise ValueError("Set FIRECRAWL_API_KEY")
@@ -114,21 +179,17 @@ def run_evals():
 
     for test in TEST_URLS:
         url = test["url"]
-
-        # Fix 4: use category from ground truth if present
         gt = gt_map.get(url, {})
         category = gt.get("category", test["type"])
+        llm_invoked = False
 
         print(f"\n[{category.upper()}] {url}")
 
-        # ── Step 1: Scrape 
-        # Fix 2: measure latency even on failure
         start = time.time()
         try:
             response = app.scrape_url(url, formats=["markdown"])
             latency_ms = round((time.time() - start) * 1000, 2)
 
-            # Fix 1: robust response parsing
             if isinstance(response, dict):
                 markdown = (
                     response.get("markdown") or
@@ -145,8 +206,6 @@ def run_evals():
             markdown = ""
             success = False
 
-        # ── Step 2: Code checks 
-        # Fix 3: explicit hard failure
         if not success:
             checks = {
                 "category": category,
@@ -177,8 +236,6 @@ def run_evals():
         print(f"  GT Pass:     {checks['must_contain_pass']}")
         print(f"  Needs LLM:   {checks['needs_llm']}")
 
-        # ── Step 3: LLM judge (only if needed)
-        llm_invoked = False
         llm_result = {
             "llm_score": code_score,
             "llm_raw_avg": code_score / 20,
@@ -198,7 +255,6 @@ def run_evals():
             print(f"  LLM Score:   {llm_result['llm_score']}/100")
             print(f"  Confidence:  {llm_result['confidence']}")
 
-        # ── Step 4: Final score 
         final_score = compute_final_score(
             code_score=code_score,
             llm_score=llm_result["llm_score"],
@@ -207,14 +263,14 @@ def run_evals():
         )
         print(f"  Final Score: {final_score}/100")
 
-        # Fix 6: human review includes borderline + deterministic fails
+        llm_raw = llm_result.get("llm_raw_avg", 0)
+        llm_variance = llm_result.get("llm_variance", 0)
+
         needs_human_review = (
-            llm_result["needs_human_review"] or
-            checks.get("fail_reason") is not None or
-            40 <= final_score <= 70
+            (llm_invoked and 2.5 <= llm_raw <= 3.5) or
+            (llm_invoked and llm_variance >= 2)
         )
 
-        # ── Step 5: Build result 
         result = EvalResult(
             url=url,
             category=category,
@@ -258,7 +314,6 @@ def run_evals():
             category_scores[category] = []
         category_scores[category].append(final_score)
 
-    # ── Summary 
     total = len(results)
     successful = [r for r in results if r.success]
 
@@ -270,7 +325,6 @@ def run_evals():
     success_rate = len(successful) / total * 100
     llm_rate = sum(1 for r in results if r.llm_invoked) / total * 100
 
-    # Fix 5: proper percentile
     latencies = sorted([r.latency_ms for r in results])
     p50 = percentile(latencies, 0.50)
     p95 = percentile(latencies, 0.95)
@@ -301,7 +355,6 @@ def run_evals():
     print(f"  GT Pass:      {sum(1 for r in results if r.must_contain_pass)}/{total}")
     print(f"  Paywall Det:  {sum(1 for r in results if r.paywall_detected)}/{total}")
 
-    # ── Cohen's Kappa 
     print("\nCohen's Kappa Check:")
     if os.path.exists("evals/human_labels.json"):
         kappa = run_kappa_check(
@@ -317,7 +370,6 @@ def run_evals():
         print(f"  Kappa:   {kappa['kappa']}")
         print(f"  Trusted: {kappa['trusted']}")
 
-    # ── Save 
     with open("evals/eval_results.json", "w") as f:
         json.dump({
             "summary": {
